@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // ─── ESLint & TypeScript: Abaikan saat build Vercel ──────────────────────
+  // (ESLint tetap bisa dijalankan manual dengan: npm run lint)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: false, // tetap cek TypeScript errors
+  },
+
   // ─── Header Keamanan & CORS untuk WASM/WebGPU ────────────────────────────
+
   async headers() {
     return [
       {

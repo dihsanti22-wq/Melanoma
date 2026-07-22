@@ -48,7 +48,7 @@ npm run dev
 
 ```bash
 # Masuk ke folder project
-cd "f:\JOKI\BARUDAK NUSA PUTRA\BARUDAK TI\Ihsan Maulana\skripsi\Project"
+cd "Project"
 
 # Install semua dependency (baca dari package.json)
 npm install
