@@ -50,20 +50,27 @@ export async function runInferenceViaAPI(
 
   const data: ApiResponse = await response.json();
   const totalMs = performance.now() - startTime;
+  const imgW = data.imageSize?.width ?? 1;
+  const imgH = data.imageSize?.height ?? 1;
 
-  // Konversi response API ke format InferenceResult yang dipakai frontend
+  // Konversi bbox dari relatif {x,y,width,height} → absolut piksel {x1,y1,x2,y2}
   const detections: Detection[] = data.detections.map((d) => ({
     classId: d.classId,
     className: d.className as DetectionClass,
     confidence: d.confidence,
-    bbox: d.bbox,
+    bbox: {
+      x1: d.bbox.x * imgW,
+      y1: d.bbox.y * imgH,
+      x2: (d.bbox.x + d.bbox.width) * imgW,
+      y2: (d.bbox.y + d.bbox.height) * imgH,
+    },
   }));
 
   return {
     detections,
     inferenceTimeMs: data.inferenceTimeMs ?? totalMs,
-    timestamp: new Date().toISOString(),
-    imageUrl,
+    processedImageSize: { width: imgW, height: imgH },
+    timestamp: new Date(),
   };
 }
 
