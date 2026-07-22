@@ -10,30 +10,14 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false, // tetap cek TypeScript errors
   },
 
-  // ─── Header Keamanan & CORS untuk WASM/WebGPU ────────────────────────────
+  // ─── Header untuk WASM dan Model Cache ──────────────────────────────────
+  // CATATAN: Tidak pakai COOP/COEP — header itu blokir WebGL!
+  // Sawo project juga tidak pakai dan WebGL-nya jalan normal.
 
   async headers() {
     return [
       {
-        // Header COOP/COEP wajib untuk SharedArrayBuffer
-        source: "/(.*)",
-        headers: [
-          {
-            key: "Cross-Origin-Opener-Policy",
-            value: "same-origin",
-          },
-          {
-            key: "Cross-Origin-Embedder-Policy",
-            value: "require-corp",
-          },
-          {
-            key: "Cross-Origin-Resource-Policy",
-            value: "cross-origin",
-          },
-        ],
-      },
-      {
-        // Header khusus file WASM — MIME type benar agar browser menerima
+        // MIME type benar untuk .wasm agar browser terima
         source: "/:file*.wasm",
         headers: [
           {
@@ -47,7 +31,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Header khusus untuk file model ONNX — caching permanen
+        // Cache permanen untuk file model ONNX (19MB, tidak perlu re-download)
         source: "/models/:path*",
         headers: [
           {
@@ -62,6 +46,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
 
   // ─── Webpack: WASM support untuk onnxruntime-web ─────────────────────────
   webpack: (config, { isServer }) => {

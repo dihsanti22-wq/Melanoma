@@ -43,9 +43,10 @@ export async function initializeModel(
     ortModule = await import("onnxruntime-web");
     onProgress?.(30);
 
-    // Konfigurasi WASM: path dari CDN + multi-thread (pakai semua core CPU)
-    ortModule.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.27.0/dist/";
-    // Gunakan semua core CPU yang tersedia (max 4 agar tidak overload)
+    // Konfigurasi WASM: path dari CDN (versi 1.26.0 terbukti stabil)
+    ortModule.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.26.0/dist/";
+    // Gunakan semua core CPU (tanpa COOP/COEP, SharedArrayBuffer mungkin tidak tersedia
+    // tapi WebGL GPU akan dipakai — lebih cepat dari multi-thread WASM)
     ortModule.env.wasm.numThreads = Math.min(4, navigator.hardwareConcurrency || 2);
 
     onProgress?.(50);
