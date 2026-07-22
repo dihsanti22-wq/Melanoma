@@ -50,15 +50,29 @@ export async function initializeModel(
 
     onProgress?.(50);
 
-    // Hanya WASM multi-thread — WebGL memicu download JSEP WASM 26MB (lambat!)
-    // WASM SIMD + 4 threads sudah cukup cepat untuk deteksi still image
-    const executionProviders: string[] = ["wasm"];
+    // Coba WebGL (GPU) terlebih dulu — jauh lebih cepat dari WASM CPU
+    // WebGL TIDAK membutuhkan JSEP WASM, berbeda dengan WebGPU
+    // Jika WebGL gagal, otomatis fallback ke WASM multi-thread
+    let session_: Awaited<ReturnType<typeof ortModule.InferenceSession.create>> | null = null;
 
-    // Muat model ONNX
-    session = await ortModule.InferenceSession.create(modelPath, {
-      executionProviders,
-      graphOptimizationLevel: "all",
-    });
+    // Coba WebGL dulu
+    try {
+      session_ = await ortModule.InferenceSession.create(modelPath, {
+        executionProviders: ["webgl"],
+        graphOptimizationLevel: "all",
+      });
+      console.info("[MelanomaDetector] Menggunakan WebGL (GPU) provider.");
+    } catch {
+      // Fallback ke WASM multi-thread jika WebGL tidak tersedia
+      console.warn("[MelanomaDetector] WebGL gagal, fallback ke WASM multi-thread.");
+      session_ = await ortModule.InferenceSession.create(modelPath, {
+        executionProviders: ["wasm"],
+        graphOptimizationLevel: "all",
+      });
+      console.info("[MelanomaDetector] Menggunakan WASM provider.");
+    }
+    session = session_;
+
 
     onProgress?.(80);
 
