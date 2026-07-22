@@ -5,7 +5,9 @@ D. Ihsan Maulana | Universitas Nusa Putra, 2026
 """
 
 import io
+import os
 import time
+import urllib.request
 import numpy as np
 import onnxruntime as ort
 from PIL import Image
@@ -17,10 +19,19 @@ CORS(app)  # Allow cross-origin dari Vercel frontend
 
 # ─── Load Model saat startup (hanya sekali) ─────────────────────────────────
 MODEL_PATH = "best.onnx"
+# URL model dari GitHub raw (otomatis download jika tidak ada lokal)
+MODEL_URL = "https://github.com/dihsanti22-wq/Melanoma/raw/main/public/models/best.onnx"
 INPUT_SIZE = 640
+
 CONF_THRESHOLD = 0.25
 IOU_THRESHOLD = 0.45
 CLASS_NAMES = ["MEL", "NV"]
+
+# Download model jika tidak ada lokal (untuk Render.com / cloud deployment)
+if not os.path.exists(MODEL_PATH):
+    print(f"[MelanoScan] Model tidak ditemukan, download dari GitHub...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    print(f"[MelanoScan] Model berhasil didownload: {MODEL_PATH}")
 
 # Load model ONNX
 session = ort.InferenceSession(
@@ -29,6 +40,7 @@ session = ort.InferenceSession(
 )
 input_name = session.get_inputs()[0].name
 print(f"[MelanoScan] Model loaded. Input: {input_name}")
+
 
 
 # ─── Preprocessing ──────────────────────────────────────────────────────────
