@@ -60,8 +60,24 @@ export async function initializeModel(
       graphOptimizationLevel: "all",
     });
 
+    onProgress?.(80);
+
+    // ─── Warm-up: dummy inference untuk pre-kompile WASM JIT ──────────────
+    // Tanpa ini, inferensi PERTAMA selalu lambat karena JIT baru jalan.
+    // Dengan warm-up, inferensi user langsung cepat dari awal.
+    const inputSize = MODEL_CONFIG.inputSize;
+    const dummyTensor = new ortModule.Tensor(
+      "float32",
+      new Float32Array(1 * 3 * inputSize * inputSize),
+      [1, 3, inputSize, inputSize]
+    );
+    const inputName = session.inputNames[0];
+    await session.run({ [inputName]: dummyTensor });
+    // ──────────────────────────────────────────────────────────────────────
+
     onProgress?.(100);
-    console.info(`[MelanomaDetector] Model dimuat. Threads: ${ortModule.env.wasm.numThreads}, Provider: webgl/wasm`);
+    console.info(`[MelanomaDetector] Ready. Threads: ${ortModule.env.wasm.numThreads}, warm-up done.`);
+
 
   } catch (error) {
     session = null;
