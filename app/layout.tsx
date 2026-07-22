@@ -61,6 +61,22 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
+        {/* Preconnect ke CDN untuk WASM engine */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        {/* Preload ONNX model — browser mulai download segera, bukan nunggu JS */}
+        <link
+          rel="preload"
+          href="/models/best.onnx"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
+        {/* Preload WASM engine dari CDN */}
+        <link
+          rel="preload"
+          href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.27.0/dist/ort-wasm-simd-threaded.wasm"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
