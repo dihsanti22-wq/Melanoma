@@ -4,7 +4,7 @@
 // Jauh lebih cepat dari browser WASM!
 // ============================================================
 
-import type { InferenceResult, Detection } from "@/types/detection";
+import type { InferenceResult, Detection, DetectionClass } from "@/types/detection";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -54,7 +54,7 @@ export async function runInferenceViaAPI(
   // Konversi response API ke format InferenceResult yang dipakai frontend
   const detections: Detection[] = data.detections.map((d) => ({
     classId: d.classId,
-    className: d.className,
+    className: d.className as DetectionClass,
     confidence: d.confidence,
     bbox: d.bbox,
   }));
