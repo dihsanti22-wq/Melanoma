@@ -17,13 +17,15 @@ import type { ModelConfig } from "@/types/model";
  */
 export const MODEL_CONFIG: ModelConfig = {
   modelPath: "/models/best.onnx",
-  // 320px: 4x lebih cepat dari 640, akurasi masih baik untuk deteksi lesi
-  inputSize: 320,
+  // Model ONNX sudah di-export dengan fixed input 640×640 — JANGAN diubah
+  // tanpa export ulang model dari training
+  inputSize: 640,
   confidenceThreshold: 0.25,
   iouThreshold: 0.45,
   numClasses: 2,
   classNames: ["MEL", "NV"],
 };
+
 
 // ─── Indeks Kelas ─────────────────────────────────────────────────────────
 
