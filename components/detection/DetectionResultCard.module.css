@@ -1,0 +1,65 @@
+/* components/detection/DetectionResultCard.module.css */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  transition: border-color var(--transition-base);
+}
+.card:hover { border-color: var(--border-default); }
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.index {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-neutral-500);
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.5rem;
+}
+
+.body { padding: 0; }
+
+.bboxInfo { display: flex; flex-direction: column; gap: 0.375rem; }
+
+.bboxLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-neutral-600);
+}
+
+.bboxCoords {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.bboxCoords span {
+  font-size: 0.775rem;
+  color: var(--color-neutral-500);
+  font-family: var(--font-mono);
+}
+.bboxCoords strong {
+  color: var(--color-neutral-300);
+  font-weight: 600;
+}
+
+.description {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--color-neutral-500);
+  padding-top: 0.375rem;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0;
+}

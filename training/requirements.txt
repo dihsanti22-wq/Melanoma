@@ -1,0 +1,52 @@
+# ============================================================
+# requirements.txt — Dependensi Python untuk Training YOLOv11
+# MelanoScan | D. Ihsan Maulana | Universitas Nusa Putra, 2026
+# ============================================================
+#
+# CARA INSTALL:
+#   pip install -r requirements.txt
+#
+# REKOMENDASI: Gunakan virtual environment terlebih dahulu:
+#   python -m venv .venv
+#   .venv\Scripts\activate      (Windows)
+#   source .venv/bin/activate   (Linux/Mac)
+#   pip install -r requirements.txt
+#
+# CATATAN GPU (NVIDIA CUDA):
+#   Pastikan driver CUDA 11.8+ sudah terinstal sebelum install PyTorch.
+#   Cek: nvidia-smi
+#   Install PyTorch GPU terlebih dahulu (SEBELUM requirements ini):
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# ============================================================
+
+# ── Framework Utama YOLOv11 ───────────────────────────────────
+ultralytics==8.3.162
+
+# ── Export & Deployment Format ────────────────────────────────
+onnx==1.16.2
+onnxruntime==1.19.2
+onnxsim==0.4.36
+
+# ── Augmentasi Data Dermoskopi ────────────────────────────────
+albumentations==1.4.18
+
+# ── Analisis & Visualisasi Data ───────────────────────────────
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.9.2
+seaborn==0.13.2
+scikit-learn==1.5.2
+Pillow==10.4.0
+
+# ── Utilitas ──────────────────────────────────────────────────
+tqdm==4.66.5
+PyYAML==6.0.2
+ipykernel==6.29.5
+ipywidgets==8.1.5
+jupyter==1.1.1
+
+# ── Opsional: Roboflow dataset download ───────────────────────
+# roboflow==1.1.48
+
+# ── Opsional: Kaggle dataset download ─────────────────────────
+# kaggle==1.6.17

@@ -1,0 +1,17 @@
+/* components/detection/BoundingBoxCanvas.module.css */
+
+.container {
+  width: 100%;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #000;
+  line-height: 0;
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}

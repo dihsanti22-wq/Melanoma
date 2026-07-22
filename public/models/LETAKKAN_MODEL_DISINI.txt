@@ -1,0 +1,6 @@
+Placeholder — letakkan file best.onnx di sini setelah training selesai.
+
+File ini wajib ada agar sistem web dapat berjalan.
+Path yang diakses oleh browser: /models/best.onnx
+
+Lihat models/README.md untuk instruksi lengkap.

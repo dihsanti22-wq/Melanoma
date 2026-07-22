@@ -1,0 +1,28 @@
+/* components/ui/LoadingSpinner.module.css */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.spinner {
+  border-radius: 50%;
+  border-style: solid;
+  border-color: var(--border-default);
+  border-top-color: var(--color-primary-400);
+  animation: spin 0.8s linear infinite;
+}
+
+.sm { width: 1.25rem; height: 1.25rem; border-width: 2px; }
+.md { width: 2.5rem;  height: 2.5rem;  border-width: 3px; }
+.lg { width: 4rem;    height: 4rem;    border-width: 4px; }
+
+.label {
+  font-size: 0.875rem;
+  color: var(--color-neutral-400);
+  letter-spacing: 0.02em;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

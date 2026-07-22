@@ -1,0 +1,150 @@
+/* components/input/ImageDropzone.module.css */
+
+.wrapper { width: 100%; }
+
+/* Dropzone area */
+.dropzone {
+  width: 100%;
+  min-height: 260px;
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  background: rgba(255,255,255,0.02);
+  outline: none;
+}
+.dropzone:hover:not(.disabled) {
+  border-color: var(--color-primary-600);
+  background: rgba(20, 184, 166, 0.04);
+}
+.dropzone:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+.dropzone.active {
+  border-color: var(--color-primary-400);
+  background: rgba(20, 184, 166, 0.08);
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1);
+}
+.dropzone.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 184, 166, 0.08);
+  border-radius: var(--radius-xl);
+  color: var(--color-primary-500);
+  transition: all var(--transition-base);
+}
+.iconActive, .dropzone.active .iconWrapper {
+  background: rgba(20, 184, 166, 0.15);
+  color: var(--color-primary-400);
+  transform: scale(1.05);
+}
+
+.dropText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary-300);
+  margin: 0;
+}
+.mainText {
+  font-size: 0.9375rem;
+  color: var(--color-neutral-300);
+  margin: 0;
+}
+.browseLink { color: var(--color-primary-400); font-weight: 600; }
+.subText {
+  font-size: 0.8rem;
+  color: var(--color-neutral-600);
+  margin: 0;
+}
+
+/* Preview */
+.preview {
+  width: 100%;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: #000;
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  display: block;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.fileIcon {
+  color: var(--color-primary-500);
+  flex-shrink: 0;
+  display: flex;
+}
+
+.fileMeta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.fileName {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-neutral-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileSize {
+  font-size: 0.75rem;
+  color: var(--color-neutral-500);
+  font-family: var(--font-mono);
+}
+
+.clearBtn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger-400);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.clearBtn:hover:not(:disabled) {
+  background: rgba(239,68,68,0.16);
+  border-color: rgba(239,68,68,0.4);
+}
+.clearBtn:disabled { opacity: 0.5; cursor: not-allowed; }

@@ -1,0 +1,62 @@
+# YOLOv11 Dataset Configuration
+# Digunakan oleh Ultralytics untuk training & evaluasi
+# Referensi: https://docs.ultralytics.com/datasets/
+#
+# Penelitian:
+#   Pengembangan Sistem Deteksi Lesi Melanoma dan Melanocytic Nevus Berbasis Web
+#   pada Citra Dermoskopi Menggunakan YOLOv11 untuk Skrining Awal Tumor Kulit
+# Peneliti: D. Ihsan Maulana — Teknik Informatika, Universitas Nusa Putra, 2026
+
+# ── Path Dataset ───────────────────────────────────────────────
+# KAGGLE   : /kaggle/input/<NAMA_DATASET_ANDA>
+# LOKAL    : ./datasets/ham10000_yolo
+# COLAB    : /content/datasets/ham10000_yolo
+path: ./datasets/ham10000_yolo   # Sesuaikan dengan lokasi dataset
+
+# ── Subfolder Split Dataset ────────────────────────────────────
+# Catatan: Roboflow menggunakan folder "valid" (bukan "val")
+train: images/train   # Citra training   (~70% total)
+val:   images/valid   # Citra validasi   (~15% total) — Roboflow default: "valid"
+test:  images/test    # Citra pengujian  (~15% total)
+
+# ── Jumlah Kelas ───────────────────────────────────────────────
+nc: 2
+
+# ── Nama Kelas (URUTAN HARUS SESUAI dengan label file .txt) ───
+# 0: MEL  — Melanoma (Lesi Ganas)
+# 1: NV   — Melanocytic Nevus (Lesi Jinak / Tahi Lalat)
+names:
+  0: MEL
+  1: NV
+
+# ── Catatan Dataset ───────────────────────────────────────────
+# Sumber    : HAM10000 (Human Against Machine with 10000 training images)
+# Paper     : Tschandl et al., 2018 (https://doi.org/10.1038/sdata.2018.161)
+# Anotasi   : Auto-convert segmentation mask → bounding box via Roboflow
+#             Dwyer et al. (2024). Roboflow. https://roboflow.com
+# Format    : Ultralytics YOLO (setiap gambar memiliki file .txt label)
+# Struktur  : <class_id> <cx> <cy> <w> <h>  (semua dinormalisasi 0-1)
+#
+# ── Alur Persiapan Dataset ────────────────────────────────────
+# 1. Download HAM10000 (gambar + mask) dari ISIC Archive / Kaggle
+# 2. Filter kelas: MEL (dx='mel') dan NV (dx='nv')
+# 3. Upload ke Roboflow → auto-convert mask → bounding box
+# 4. Augmentasi Lapis 1 di Roboflow:
+#    - Flip H/V, Rotate ±15°, Brightness ±15%
+#    - Multiplier: 3× (tiap gambar menghasilkan 3 variasi)
+# 5. Split: Train 70% / Valid 15% / Test 15%
+# 6. Export format: YOLOv11 (Ultralytics)
+#
+# ── Distribusi Kelas (HAM10000 asli — sebelum augmentasi) ────
+#   MEL  : ~1.113 gambar (~11.1%)
+#   NV   : ~6.705 gambar (~67.0%)
+# → Class imbalance SANGAT signifikan
+# → Diatasi dengan: augmentasi 2 lapis + pembobotan loss
+#
+# ── Target Metrik Performa Minimum ───────────────────────────
+# (berdasarkan kajian literatur: Litjens et al. 2017, Esteva et al. 2017)
+#   mAP@0.5           : ≥ 0.65  (ideal: ≥ 0.80)
+#   mAP@0.5:0.95      : ≥ 0.40  (ideal: ≥ 0.55)
+#   Precision         : ≥ 0.70  (ideal: ≥ 0.85)
+#   Recall/Sensitivity: ≥ 0.65  (ideal: ≥ 0.80) ← KRITIS untuk skrining medis
+#   F1-Score          : ≥ 0.67  (ideal: ≥ 0.82)
