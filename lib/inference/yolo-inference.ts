@@ -43,16 +43,16 @@ export async function initializeModel(
     ortModule = await import("onnxruntime-web");
     onProgress?.(30);
 
-    // Konfigurasi WASM path — ambil dari CDN (tidak perlu copy file ke public/)
+    // Konfigurasi WASM: path dari CDN + multi-thread (pakai semua core CPU)
     ortModule.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.27.0/dist/";
-    // Nonaktifkan multi-thread untuk kompatibilitas maksimal
-    ortModule.env.wasm.numThreads = 1;
+    // Gunakan semua core CPU yang tersedia (max 4 agar tidak overload)
+    ortModule.env.wasm.numThreads = Math.min(4, navigator.hardwareConcurrency || 2);
 
     onProgress?.(50);
 
-    // Gunakan WASM saja sebagai execution provider yang paling stabil
-    // WebGPU & WebGL sering gagal karena COOP/COEP / driver issues
-    const executionProviders: string[] = ["wasm"];
+    // Execution providers: WebGL (GPU) → WASM (CPU multi-thread)
+    // WebGL jauh lebih cepat dari WASM karena pakai GPU
+    const executionProviders: string[] = ["webgl", "wasm"];
 
     // Muat model ONNX
     session = await ortModule.InferenceSession.create(modelPath, {
@@ -61,9 +61,9 @@ export async function initializeModel(
     });
 
     onProgress?.(100);
-    console.info(
-      `[MelanomaDetector] Model berhasil dimuat via WASM.`
-    );
+    const provider = session.handler?.sessionHandler?.backend ?? "webgl/wasm";
+    console.info(`[MelanomaDetector] Model dimuat. Threads: ${ortModule.env.wasm.numThreads}, Provider: ${provider}`);
+
   } catch (error) {
     session = null;
     ortModule = null;
