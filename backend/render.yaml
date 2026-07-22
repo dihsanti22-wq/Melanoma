@@ -1,5 +1,0 @@
-Pilih Python runtime di Render dengan settings ini:
-
-Build Command: pip install -r backend/requirements.txt
-Start Command: cd backend && gunicorn --bind 0.0.0.0:$PORT --timeout 120 app:app
-Root Directory: (kosong, biarkan root project)

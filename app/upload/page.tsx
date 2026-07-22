@@ -28,28 +28,13 @@ export default function UploadPage() {
     setModelLoadProgress(0);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-      if (apiUrl) {
-        // ─── Pakai Flask API (server-side, cepat ~20-50ms) ───────────────
-        setStatus("inferencing");
-        const { runInferenceViaAPI } = await import("@/lib/inference/api-inference");
-        // Ambil file dari Object URL
-        const blob = await fetch(imageUrl).then((r) => r.blob());
-        const file = new File([blob], "image.jpg", { type: blob.type });
-        const inferenceResult = await runInferenceViaAPI(file, imageUrl);
-        setResult(inferenceResult);
-      } else {
-        // ─── Fallback: WASM browser-side ─────────────────────────────────
-        const { initializeModel, runInference, isModelReady } = await import("@/lib/inference/yolo-inference");
-        if (!isModelReady()) {
-          await initializeModel(undefined, (p) => setModelLoadProgress(p));
-        }
-        setStatus("inferencing");
-        const inferenceResult = await runInference(imageUrl);
-        setResult(inferenceResult);
+      const { initializeModel, runInference, isModelReady } = await import("@/lib/inference/yolo-inference");
+      if (!isModelReady()) {
+        await initializeModel(undefined, (p) => setModelLoadProgress(p));
       }
-
+      setStatus("inferencing");
+      const inferenceResult = await runInference(imageUrl);
+      setResult(inferenceResult);
       setStatus("done");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "Terjadi kesalahan tidak terduga.");
