@@ -17,7 +17,8 @@ import type { ModelConfig } from "@/types/model";
  */
 export const MODEL_CONFIG: ModelConfig = {
   modelPath: "/models/best.onnx",
-  inputSize: 640,
+  // 320px: 4x lebih cepat dari 640, akurasi masih baik untuk deteksi lesi
+  inputSize: 320,
   confidenceThreshold: 0.25,
   iouThreshold: 0.45,
   numClasses: 2,

@@ -50,9 +50,9 @@ export async function initializeModel(
 
     onProgress?.(50);
 
-    // Execution providers: WebGL (GPU) → WASM (CPU multi-thread)
-    // WebGL jauh lebih cepat dari WASM karena pakai GPU
-    const executionProviders: string[] = ["webgl", "wasm"];
+    // Hanya WASM multi-thread — WebGL memicu download JSEP WASM 26MB (lambat!)
+    // WASM SIMD + 4 threads sudah cukup cepat untuk deteksi still image
+    const executionProviders: string[] = ["wasm"];
 
     // Muat model ONNX
     session = await ortModule.InferenceSession.create(modelPath, {
