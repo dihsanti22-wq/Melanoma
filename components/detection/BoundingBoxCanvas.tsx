@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { InferenceResult } from "@/types/detection";
-import { CLASS_COLORS } from "@/lib/inference/constants";
+
 
 interface BoundingBoxCanvasProps {
   imageUrl: string;

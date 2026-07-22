@@ -108,13 +108,13 @@ export function decodeYOLOOutput(
   padY: number,
   originalWidth: number,
   originalHeight: number,
-  _inputSize: number = 640
+  inputSize: number = 640 // eslint-disable-line @typescript-eslint/no-unused-vars
 ): Detection[] {
   const detections: Detection[] = [];
 
   // outputShape: [1, 4 + numClasses, numAnchors]
   const numAnchors = outputShape[2];
-  const _numFeatures = outputShape[1]; // 4 + numClasses (unused, kept for documentation)
+  // outputShape: [1, 4 + numClasses, numAnchors]
 
   for (let i = 0; i < numAnchors; i++) {
     // Baca 4 koordinat kotak (cx, cy, w, h dalam skala model)
