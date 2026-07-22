@@ -61,8 +61,7 @@ export async function initializeModel(
     });
 
     onProgress?.(100);
-    const provider = session.handler?.sessionHandler?.backend ?? "webgl/wasm";
-    console.info(`[MelanomaDetector] Model dimuat. Threads: ${ortModule.env.wasm.numThreads}, Provider: ${provider}`);
+    console.info(`[MelanomaDetector] Model dimuat. Threads: ${ortModule.env.wasm.numThreads}, Provider: webgl/wasm`);
 
   } catch (error) {
     session = null;
