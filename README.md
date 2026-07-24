@@ -105,7 +105,7 @@ melanoma-detector/
 
 ```bash
 # 1. Clone atau buka folder project
-cd "f:\JOKI\BARUDAK NUSA PUTRA\BARUDAK TI\Ihsan Maulana\skripsi\Project"
+cd "Project"
 
 # 2. Install dependensi
 npm install
