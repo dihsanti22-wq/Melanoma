@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { InferenceResult } from "@/types/detection";
+import { CLASS_MEL } from "@/lib/inference/constants";
 
 
 interface BoundingBoxCanvasProps {
@@ -43,9 +44,11 @@ export function BoundingBoxCanvas({ imageUrl, result }: BoundingBoxCanvasProps) 
         const { x1, y1, x2, y2 } = det.bbox;
         const w    = x2 - x1;
         const h    = y2 - y1;
-        const isMEL = det.className === "MEL";
+        // Gunakan classId (0=MEL, 1=NV) bukan className string untuk pengecekan warna
+        // className berisi "Melanoma"/"Melanocytic Nevus" (dari CLASS_LABELS_ID), BUKAN "MEL"/"NV"
+        const isMEL = det.classId === CLASS_MEL;
 
-        // Hex colors
+        // Hex colors — merah untuk MEL (ganas), hijau untuk NV (jinak)
         const hexColor    = isMEL ? "#f43f5e" : "#10b981";
         const hexColorBg  = isMEL ? "rgba(244,63,94,0.12)" : "rgba(16,185,129,0.12)";
 
